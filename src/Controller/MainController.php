@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Repository\StarShipRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -9,12 +10,16 @@ use Symfony\Component\Routing\Attribute\Route;
 class MainController extends AbstractController
 {
     #[Route('/')]
-    public function homepage(): Response
+    public function homepage(StarShipRepository $repository): Response
     {
-        $noOfStarShips = 69.420;
+        $starShips =  $repository->findStarShips();
+        $myShip =  $starShips[array_rand($starShips)];
         return $this->render(
             'main/homepage.html.twig',
-            ['noOfStarShips' => $noOfStarShips]
+            [
+                'starShips' => $starShips,
+                'myShip' => $myShip
+            ]
         );
     }
 }

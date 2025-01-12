@@ -5,10 +5,11 @@
 {%  block body %}
 <h1>Homepage: Hello World!</h1>
 <div>
-    Number of starShips: {{ noOfStarShips * 10 }}
-    {% if noOfStarShips > 69 %}
+    No of StarShips: {{ starShips|length }}
+    {% if starShips|length > 69 %}
         {# Comment #}
         <p>Dang Ship: {{ 420 }}</p>
     {% endif %}
+    <p>My Ship: {{ myShip.name }}</p>
 </div>
 {% endblock %}
