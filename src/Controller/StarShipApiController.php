@@ -4,18 +4,29 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Model\StarShip;
 use App\Repository\StarShipRepository;
-use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+#[Route('/api/starships')]
 class StarShipApiController extends AbstractController
 {
-    #[Route('/api/starships', name: 'api_starships', methods: ['GET'])]
+    #[Route('', methods: ['GET'])]
     public function getCollection(StarShipRepository $repository): Response
     {
-        return $this->json($repository->findStarShips());
+        return $this->json($repository->findAll());
+    }
+
+    #[Route('/{id<\d+>}', methods: ['GET'])]
+    public function get(int $id, StarShipRepository $repository): Response
+    {
+        $starship = $repository->findOne($id);
+
+        if (!$starship) {
+            throw $this->createNotFoundException("Starship not found");
+        }
+
+        return $this->json($starship);
     }
 }
